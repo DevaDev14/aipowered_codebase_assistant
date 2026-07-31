@@ -1,5 +1,5 @@
 from git import Repo
-from path_extraction import get_path
+from services.extraction.content_extraction import get_path
 
 def get_repo(repo_url, repo_name):
     directory = fr"{repo_url}{repo_name}"
