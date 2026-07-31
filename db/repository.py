@@ -20,3 +20,6 @@ def store_chunks(collection, chunks):
         documents  = documents,
         metadatas  = metadatas,
     )
+
+def search_data(vector):
+    pass

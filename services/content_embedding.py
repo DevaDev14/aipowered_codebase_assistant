@@ -8,3 +8,7 @@ def embed_chunks(chunks):
     for i, chunk in enumerate(chunks):
         chunk["embedding"] = embeddings[i].tolist()
     return chunks
+
+def query_embedding(query):
+    embedding = embed_model.encode(query, batch_size=8, show_progress_bar=True).tolist()
+    return embedding
