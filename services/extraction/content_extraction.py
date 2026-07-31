@@ -1,5 +1,6 @@
 from pathlib import Path
-from chunker import code_chunker
+from services.extraction.chunker import code_chunker
+from services.content_embedding import embed_chunks
 
 def get_path(path):
     dir = Path(path)
@@ -20,10 +21,15 @@ def get_path(path):
 if __name__ == '__main__':
     path = r'D:\genai\codebase_assistant\git_repos\httpx'
     chunks = get_path(path)
-    for chunk in chunks[:3]:
-        print("─" * 50)
-        print(f"Name      : {chunk['name']}")
-        print(f"Type      : {chunk['type']}")
-        print(f"File      : {chunk['file_path']}")
-        print(f"Lines     : {chunk['start_line']} → {chunk['end_line']}")
-        print(f"Content   :\n{chunk['content']}")
+    embedded_data = embed_chunks(chunks)
+    print(embedded_data[0]["name"])
+    print(len(embedded_data[0]["embedding"])) 
+    print(embedded_data[0]["embedding"][:3])
+
+    # for chunk in chunks[:3]:
+    #     print("─" * 50)
+    #     print(f"Name      : {chunk['name']}")
+    #     print(f"Type      : {chunk['type']}")
+    #     print(f"File      : {chunk['file_path']}")
+    #     print(f"Lines     : {chunk['start_line']} → {chunk['end_line']}")
+    #     print(f"Content   :\n{chunk['content']}")
