@@ -4,6 +4,8 @@ from services.extraction import git_extraction
 from services import content_embedding
 from db.conn import create_collection
 from db.repository import store_chunks
+from llm.call_model import call_llm
+from llm.prompt import build_prompt
 
 app = FastAPI()
 class IngestRequest(BaseModel):
@@ -34,5 +36,14 @@ def ask(request:AskRequest):
     query_embeddings=[embedding],
     n_results=5
     )
-    print(results)
-    return {'query': "working"}
+    retrieved_chunks = []
+    for i in range(len(results["ids"][0])):
+        retrieved_chunks.append({
+            "content"   : results["documents"][0][i],
+            "file_path" : results["metadatas"][0][i]["file_path"],
+            "start_line": results["metadatas"][0][i]["start_line"],
+            "end_line"  : results["metadatas"][0][i]["end_line"],
+        })
+    prompt = build_prompt(query, retrieved_chunks)
+    answer = call_llm(prompt)
+    return {'answer': answer }
